@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Music player</title>
+	<style type="text/css">
+		#audioList{
+			line-height: 1.5em;
+			font-kerning: 5px;
+		}
+
+		#controlsArea{
+			position: absolute;
+			bottom: 0px;
+		}
+
+		.keyboard{
+			position: absolute;
+			width: 90%;
+		}
+
+		.noteButton{
+			position: relative;
+			height: 200px;
+			width: 3%;
+		}
+
+		.sharp{
+			position: absolute;
+			margin-left: -15px;
+			background-color: black;
+			height: 150px;
+			width: 2%;
+			z-index: 2;
+		}
+
+	</style>
+	<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript">
+
+
+		//if you have another AudioContext class use that one, as some browsers have a limit
+		var audioCtx = new (window.AudioContext || window.webkitAudioContext || window.audioContext);
+
+		//All arguments are optional:
+
+		//duration of the tone in milliseconds. Default is 500
+		//frequency of the tone in hertz. default is 440
+		//volume of the tone. Default is 1, off is 0.
+		//type of tone. Possible values are sine, square, sawtooth, triangle, and custom. Default is sine.
+		//callback to use on end of tone
+		function play_note(duration, note, volume, type, callback, index) {
+		    var oscillator = audioCtx.createOscillator();
+		    var gainNode = audioCtx.createGain();
+
+		    oscillator.connect(gainNode);
+		    gainNode.connect(audioCtx.destination);
+
+		    if (volume){gainNode.gain.value = volume;};
+		    if (type){oscillator.type = type;}
+		    if (callback){oscillator.onended = function(){callback(index);};}
+			
+			if (note) {
+				oscillator.frequency.value = findFrequency(note);
+			}
+
+		    oscillator.start();
+		    setTimeout(function(){oscillator.stop()}, (duration ? duration : 500));
+		};
+
+		function findFrequency(noteLetter){
+			var frequencyValue = 0;
+			switch (noteLetter.toUpperCase()) {
+				
+				case "C4":
+					frequencyValue = 261.63;
+					break;
+				case "C#4":
+					frequencyValue = 277.18;
+					break;
+				case "D4":
+					frequencyValue = 293.66;
+					break;
+				case "D#4":
+					frequencyValue = 311.13;
+					break;
+				case "E4":
+					frequencyValue = 329.63;
+					break;
+				case "F4":
+					frequencyValue = 349.23;
+					break;
+				case "F#4":
+					frequencyValue = 369.99;
+					break;
+				case "G4":
+					frequencyValue = 392.00;
+					break;
+				case "G#4":
+					frequencyValue = 415.30;
+					break;
+				case "A4":
+					frequencyValue = 440.00;
+					break;
+				case "A#4":
+					frequencyValue = 466.16;
+					break;
+				case "B4":
+					frequencyValue = 493.88;
+					break;
+				case "A5":
+					frequencyValue = 880;
+					break;
+				case "A#5":
+					frequencyValue = 932.33;
+					break;
+				case "B5":
+					frequencyValue = 987.77;
+					break;
+				case "C5":
+					frequencyValue = 1046.50;
+					break;
+				case "C#5":
+					frequencyValue = 1108.73;
+					break;
+				case "D5":
+					frequencyValue = 1174.66;
+					break;
+				case "D#5":
+					frequencyValue = 1244.51;
+					break;
+				case "E5":
+					frequencyValue = 1318.51;
+					break;
+				case "F5":
+					frequencyValue = 1396.91;
+					break;
+				case "F#5":
+					frequencyValue = 1479.89;
+					break;
+				case "G5":
+					frequencyValue = 1567.98;
+					break;
+				case "G#5":
+					frequencyValue = 1661.22;
+					break;
+				case "A6":
+					frequencyValue = 1760.00;
+					break;
+				case "A#6":
+					frequencyValue = 1864.66;
+					break;
+				case "B6":
+					frequencyValue = 1975.53;
+					break;
+				case "C6":
+					frequencyValue = 1046.50;
+					break;
+				case "C#6":
+					frequencyValue = 1108.73;
+					break;
+				case "D6":
+					frequencyValue = 1174.66;
+					break;
+				case "D#6":
+					frequencyValue = 1244.51;
+					break;
+				case "E6":
+					frequencyValue = 1318.51;
+					break;
+				case "F6":
+					frequencyValue = 1396.91;
+					break;
+				case "F#6":
+					frequencyValue = 1479.98;
+					break;
+				case "G6":
+					frequencyValue = 1567.98;
+					break;
+				case "G#6":
+					frequencyValue = 1661.22;
+					break;
+			}
+
+			return frequencyValue;
+		}
+
+		var audioNote = [];
+		var audioDur = [];
+		var totalNoteArray = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
+
+		function addAudio(newAudio, newDur){
+			audioNote.push(newAudio);
+			audioDur.push(newDur);
+		}
+
+		function playAudio(index){
+			if(index < audioDur.length)
+				play_note(parseInt(audioDur[index]), audioNote[index], 1 , 'sine', playAudio, ++index);
+		}
+
+		function clearCueList(){
+			audioDur = [];
+			audioNote = [];
+		}
+
+		$(document).on('ready', function() {
+			ref = $('.keyboard');
+			for (var i = 0; i < totalNoteArray.length; i++) {
+				ref.append('<button class="noteButton' + (/#/.test(totalNoteArray[i])? " sharp": "") + '" data-note="' + totalNoteArray[i] + '4"></button>'); 
+			}
+			for (var i = 0; i < totalNoteArray.length; i++) {
+				ref.append('<button class="noteButton' + (/#/.test(totalNoteArray[i])? " sharp": "") + '" data-note="' + totalNoteArray[i] + '5"></button>'); 
+			}
+			for (var i = 0; i < totalNoteArray.length; i++) {
+				ref.append('<button class="noteButton' + (/#/.test(totalNoteArray[i])? " sharp": "") + '" data-note="' + totalNoteArray[i] + '6"></button>'); 
+			}
+			
+			$('.noteButton').on('click', function() {
+				$('#audioList').html( $('#audioList').html() + ' ' + $(this).data('note') );
+
+				addAudio( $(this).data('note'), prompt("How long?") );
+			});
+
+			$('.clearCue').on('click', function() {
+				$('#audioList').html('');
+				clearCueList();
+			});
+
+			$('.playButton').on('click', function() {
+				playAudio(0);
+			});
+
+			
+
+		});
+
+
+	</script>
+</head>
+<body>
+
+<div>
+	<div class="keyboard">
+		
+	</div>
+	<div id="controlsArea">
+		<button class="clearCue">Clear</button>
+		<button class="playButton">Play</button>
+	</div>
+	<div id="audioList">
+		
+	</div>
+</div>
+
+</body>
+</html>

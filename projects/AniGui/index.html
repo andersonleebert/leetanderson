@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AniGui</title>
+<link rel="stylesheet" href="css/foundation.css" />
+<link rel="stylesheet" href="css/app.css" />
+    
+</head>
+<body ondrop="drop(event)" ondragover="allowDrop(event)">
+
+    <!-- animateable object -->
+    <div id="sprite" draggable="true" ondragstart="drag(event)"></div>
+        
+    <!-- slidedown menu -->
+    <aside class="settingMenu" style="display:none;">
+        <ul class="off-canvas-list">
+            <li><label class="settingHeader">Animation Settings</label></li>
+            <li>
+                <label for="duration">Length in seconds</label>
+                <div id="slider" class="range-slider" data-slider data-options="display_selector: #duration; initial: 1;start: 0.1; end: 10; step: 0.1;">
+                  <span class="range-slider-handle" role="slider" tabindex="0"></span>
+                  <span class="range-slider-active-segment"></span>
+                </div>
+                <span id="duration"></span>
+            </li>
+            <li>
+                <label>Iterations</label>
+
+                <select class="styleIterations">
+                    <option>Infinite</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </li>
+            <li>
+                <label>Easing</label>
+
+                <select class="styleTiming">
+                    <option>Linear</option>
+                    <option>Ease</option>
+                    <option>Ease-in</option>
+                    <option>Ease-out</option>
+                    <option>Ease-in-out</option>
+                </select>
+            </li>
+            <li>
+                <label>Direction</label>
+
+                <select class="styleDirection">
+                    <option>Normal</option>
+                    <option>Alternate</option>
+                    <option>Reverse</option>
+                    <option>Alternate-reverse</option>
+                </select>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Keyframes, settings, save, and logo -->
+    <nav class="top-bar" data-topbar>
+        <ul class="title-area">
+            <li class="name">
+                <h1><a href="#">AniGui</a></h1>
+            </li>
+            <li class="toggle-topbar menu-icon"><a href="#"><span>Keyframes</span></a></li>
+        </ul>
+
+      <section class="top-bar-section">
+        <ul class="right">
+            <li class="perm keyframe selected" onclick="modifyKeyframe(this)"><a href="#select" class="medium secondary button"><span>0</span>%</a></li>
+            <li class="perm keyframe" onclick="modifyKeyframe(this)"><a href="#select" class="medium secondary button"><span>100</span>%</a></li>
+            <li class="name"><h1 id="settingToggle"><a href="#">Settings</a></h1></li>
+            <li class="name"><h1 id="stylePanel"><a href="#">Styles</a></h1></li>
+            <li class="name"><h1 id="save"><a href="#" data-reveal-id="saveDialog">Save</a></h1></li>
+        </ul>
+      </section>
+
+    </nav>
+
+
+    <!-- save dialog -->
+    <div id="saveDialog" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    </div>
+
+
+    <!-- animation styles container -->
+    <div id="animations">
+        <style type="text/css">
+            /* Placeholder */    
+        </style>
+    </div>
+
+
+    <!-- add keyframe dialog -->
+    <div id="percentDialog" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <h2 id="modalTitle">Add one or more keyframes</h2>
+        <div class="row collapse" style="background: inherit;">
+            <div class="small-10 columns"><input type="text" id="percentInput" /></div>
+            <div class="small-2 columns"><span class="postfix">%</span></div>
+        </div>
+        <a href="#add" class="button round" onclick="addKeyframe()">Add</a>
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    </div>
+
+
+    <!-- animation controls --> 
+    <div id="bottom-bar">
+        <ul>
+            <li><a href="#" class="small button" onclick="runAnimation(this)">Run</a></li>
+            <li><a href="#add" class="small button" data-reveal-id="percentDialog">Add <span class="hide-for-small-only">Keyframe</span></a></li>
+            <li><a href="#remove" class="small button" onclick="removeKeyframe()">Remove <span class="hide-for-small-only">Keyframe</a></li>
+            <li><a href="#set" class="small button" onclick="setKeyframe()">Set <span class="hide-for-small-only">Keyframe</a></li>
+        </ul>
+    </div>
+
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/foundation/foundation.topbar.js"></script>
+    <script src="js/foundation/foundation.reveal.js"></script>
+    <script src="js/foundation/foundation.slider.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
