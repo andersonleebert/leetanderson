@@ -20,6 +20,7 @@
                         <li><a class="menuLinks" href="#Resume">R&eacute;sum&eacute;</a></li>
                         <li><a class="menuLinks" href="#Skills">Skills</a></li>
                         <li><a class="menuLinks" href="#Contact">Contact</a></li>
+                        <li><a class="menuLinks" href="https://github.com/andersonleebert/leetanderson" target="_blank">Source</a></li>
                     </ul>
                 </div>
                 <button class="button">Menu <i class="fa fa-bars" aria-hidden="true"></i></button>
