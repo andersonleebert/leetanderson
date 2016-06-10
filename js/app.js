@@ -2,9 +2,12 @@ $(document).foundation();
 
 
 $('.menuLinks').on('click', function(event) {
-	event.preventDefault();
-	var location = $(this).attr('href');
-	$(location).ScrollTo();
+	if( $(this).attr('href').indexOf('http') == -1 ){
+		event.preventDefault();
+		var location = $(this).attr('href');
+		$(location).ScrollTo();
+	}
+	
 });
 
 $('#menuButton').on('click', function() {
